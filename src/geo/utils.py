@@ -3,6 +3,9 @@ class Point(object):
         self.x = x
         self.y = y
 
+    def __repr__(self):
+        return f'({self.x}, {self.y})'
+
     def __eq__(p1, p2):
         if not isinstance(p2, Point):
             return False
