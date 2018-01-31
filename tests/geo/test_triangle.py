@@ -1,6 +1,6 @@
 import pytest
 
-from src.geo.utils import Point
+from src.geo.point import Point
 from src.geo.triangle import Triangle
 from src.geo import triangle
 

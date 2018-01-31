@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from src.geo.utils import Point
+from src.geo.point import Point
 from src.geo.line import Line
 from src.geo import line
 

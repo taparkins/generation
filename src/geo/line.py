@@ -1,4 +1,4 @@
-from src.geo.utils import Point
+from src.geo.point import Point
 
 class Line(object):
     def __init__(self, a, b):
