@@ -39,7 +39,7 @@ def test_constructor_errors():
       Point( 0, 2.5) ),  # obtuse triangle at origin
 
     ( Triangle(Point( 1, -3), Point(-1, -1), Point(-1, -3)),
-      Point(  0, -2) ),  # right triangle translated
+      Point( 0, -2) ),  # right triangle translated
 
     ( Triangle(Point( 3,  7), Point( 5,  7), Point( 4,  5)),
       Point( 4, 6.25) ), # acute triangle translated
@@ -47,6 +47,20 @@ def test_constructor_errors():
     ( Triangle(Point( 5,  1), Point( 9,  1), Point( 7,  0)),
       Point( 7, 2.5) ),  # obtuse triangle translated
 
+    ( Triangle(Point( 2,  0), Point( 0,  0), Point( 0,  2)),
+      Point( 1,  1) ),  # Scrambled order has same result 1
+
+    ( Triangle(Point( 0,  2), Point( 2,  0), Point( 0,  0)),
+      Point( 1,  1) ), # Scrambled order has same result 2
+
+    ( Triangle(Point( 0,  2), Point( 0,  0), Point( 2,  0)),
+      Point( 1,  1) ),  # Scrambled order has same result 3
+
+    ( Triangle(Point( 0,  0), Point( 0,  2), Point( 2,  0)),
+      Point( 1,  1) ),  # Scrambled order has same result 4
+
+    ( Triangle(Point( 0,  0), Point( 2,  0), Point( 0,  2)),
+      Point( 1,  1) ),  # Scrambled order has same result 5
 ])
 def test_circumcenter(t, expected):
     assert triangle.circumcenter(t) == expected
