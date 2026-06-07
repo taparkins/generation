@@ -1,3 +1,5 @@
+import math
+
 class Point(object):
     def __init__(self, x, y):
         self.x = x
@@ -42,5 +44,15 @@ class Point(object):
         return Point(
             p.x * c,
             p.y * c,
+        )
+
+    @staticmethod
+    def dist(p1, p2):
+        assert isinstance(p1, Point)
+        assert isinstance(p2, Point)
+
+        return math.sqrt(\
+            (p1.x - p2.x)**2 +\
+            (p1.y - p2.y)**2\
         )
 

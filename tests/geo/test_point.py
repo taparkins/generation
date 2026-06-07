@@ -97,3 +97,12 @@ def test_sub_type_match():
 def test_point_scale(p, c, expected):
     assert Point.scale(p, c) == expected
 
+@pytest.mark.parametrize(
+    ('p1', 'p2', 'expected'), [
+    (Point( 0,  0), Point( 0,  0), 0),
+    (Point( 0,  0), Point( 1,  0), 1),
+    (Point( 0,  0), Point( 0,  1), 1),
+    (Point(-1, -1), Point( 3, -4), 5),
+])
+def test_point_dist(p1, p2, expected):
+    assert Point.dist(p1, p2) == expected
