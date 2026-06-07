@@ -28,6 +28,13 @@ class Point(object):
             p1.y - p2.y,
         )
 
+    def draw(self, turtle):
+        turtle.up()
+        turtle.goto(self.x, self.y)
+        turtle.down()
+        turtle.circle(3)
+        turtle.up()
+
     @staticmethod
     def scale(p, c):
         assert isinstance(p, Point)

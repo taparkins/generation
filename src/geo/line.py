@@ -12,6 +12,13 @@ class Line(object):
     def __repr__(self):
         return f'<{self.a}, {self.b}>'
 
+    def draw(self, turtle):
+        turtle.up()
+        turtle.goto(self.a.x, self.a.y)
+        turtle.down()
+        turtle.goto(self.b.x, self.b.y)
+        turtle.up()
+
 
 def intersection(line_1, line_2):
     # based on the solution provided on this wikipedia article:

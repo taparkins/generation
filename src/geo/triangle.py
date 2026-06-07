@@ -18,6 +18,15 @@ class Triangle(object):
     def __repr__(self):
         return f'∆<{self.a}, {self.b}, {self.c}'
 
+    def draw(self, turtle):
+        turtle.up()
+        turtle.goto(self.a.x, self.a.y)
+        turtle.down()
+        turtle.goto(self.b.x, self.b.y)
+        turtle.goto(self.c.x, self.c.y)
+        turtle.goto(self.a.x, self.a.y)
+        turtle.up()
+
 
 def circumcenter(triangle):
     assert isinstance(triangle, Triangle)
