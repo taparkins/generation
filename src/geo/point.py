@@ -16,6 +16,9 @@ class Point(object):
     def __ne__(p1, p2):
         return not p1.__eq__(p2)
 
+    def __hash__(self):
+        return hash((self.x, self.y))
+
     def __add__(p1, p2):
         assert isinstance(p2, Point)
         return Point(
