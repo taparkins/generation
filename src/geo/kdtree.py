@@ -38,30 +38,39 @@ class KDTree(object):
         return f'{{"data":"{self.data}", "left":{str(self.left_child)}, "right":{str(self.right_child)}}}'
 
 
-    def find_nearest(self, search_point):
-        # NOTE: I made the kdtree very generic, but my distance function isn't generic, lol
-        # for now I'm just going to let this smell in
-        self_distance = Point.dist(
-            Point(self.data[0], self.data[1]),
-            Point(search_point[0], search_point[1])
-        )
+    def find_nearest(self, search_point, pt_filter=lambda p: True):
+        # pt_filter is used to allow the caller to remove certain points from the
+        # search, based on whatever criteria they may have. If it returns False,
+        # we should ignore the data value at this node
+        self_distance, self_data = None, None
+        if pt_filter(self.data):
+            self_data = self.data
+            # NOTE: I made the kdtree very generic, but my distance function isn't generic, lol
+            # for now I'm just going to let this smell in
+            self_distance = Point.dist(
+                Point(self_data[0], self_data[1]),
+                Point(search_point[0], search_point[1])
+            )
+
 
         # Case 1: No children
         if self.left_child is None and self.right_child is None:
-            return self_distance, self.data
+            return self_distance, self_data
 
         # Case 2: Exactly one child
         elif self.left_child is None or self.right_child is None:
             search_child = self.left_child or self.right_child
-            distance, data = search_child.find_nearest(search_point)
-            if self_distance < distance:
-                distance, data = self_distance, self.data
+            distance, data = search_child.find_nearest(search_point, pt_filter)
+            if distance is None or (self_distance is not None and self_distance < distance):
+                distance, data = self_distance, self_data
             return distance, data
 
         # Case 3: Two children
         else:
             check_child = None
             other_child = None
+            # we SHOULD use self.data here (rather than self_data) because this is
+            # being used for pivot checks, NOT min-distance checks.
             dim_difference = search_point[self.comp_dim] - self.data[self.comp_dim]
             if dim_difference < 0:
                 check_child = self.left_child
@@ -70,18 +79,18 @@ class KDTree(object):
                 check_child = self.right_child
                 other_child = self.left_child
 
-            distance, data = check_child.find_nearest(search_point)
-            if self_distance < distance:
-                distance, data = self_distance, self.data
+            distance, data = check_child.find_nearest(search_point, pt_filter)
+            if distance is None or (self_distance is not None and self_distance < distance):
+                distance, data = self_distance, self_data
 
             # It's possible that the nearest point was actually on the other half-plane,
             # meaning the other child should have been checked.
             # If this happens, it means the single-coordinate difference between the
             # search point and this node's data is less than the minimum distance
             # This does the backup check, accordingly
-            if math.fabs(dim_difference) <= distance:
-                other_distance, other_data = other_child.find_nearest(search_point)
-                if other_distance < distance:
+            if distance is None or math.fabs(dim_difference) <= distance:
+                other_distance, other_data = other_child.find_nearest(search_point, pt_filter)
+                if distance is None or (other_distance is not None and other_distance < distance):
                     distance, data = other_distance, other_data
 
             return distance, data

@@ -6,11 +6,26 @@ class Line(object):
         assert isinstance(b, Point)
         assert a != b # a line cannot be defined by a duplicate point!
 
-        self.a = a
-        self.b = b
+        if a.x < b.x or (a.x == b.x and a.y < b.y):
+            self.a = a
+            self.b = b
+        else:
+            self.a = b
+            self.b = a
 
     def __repr__(self):
         return f'<{self.a}, {self.b}>'
+
+    def __eq__(l1, l2):
+        if not isinstance(l2, Line):
+            return False
+        return l1.a == l2.a and l1.b == l2.b
+
+    def __ne__(l1, l2):
+        return not l1.__eq__(l2)
+
+    def __hash__(self):
+        return hash((self.a, self.b))
 
     def draw(self, turtle):
         turtle.up()
@@ -18,6 +33,17 @@ class Line(object):
         turtle.down()
         turtle.goto(self.b.x, self.b.y)
         turtle.up()
+
+    def intersects(l1, l2, ignore_shared_vertex=False):
+        # If the set has fewer than 4 points, that means
+        # at least two of them were the same point.
+        point_set = { l1.a, l1.b, l2.a, l2.b }
+        if len(point_set) < 4:
+            return not ignore_shared_vertex
+
+        def _ccw(a, b, c):
+            return (c.y-a.y) * (b.x-a.x) > (b.y - a.y) * (c.x - a.x)
+        return _ccw(l1.a, l2.a, l2.b) != _ccw(l1.b, l2.a, l2.b) and _ccw(l1.a, l1.b, l2.a) != _ccw(l1.a, l1.b, l2.b)
 
 
 def intersection(line_1, line_2):
