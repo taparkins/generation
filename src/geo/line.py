@@ -27,6 +27,12 @@ class Line(object):
     def __hash__(self):
         return hash((self.a, self.b))
 
+    def translated(self, dx, dy):
+        return Line(
+            self.a + Point(dx, dy),
+            self.b + Point(dx, dy),
+        )
+
     def draw(self, turtle):
         turtle.up()
         turtle.goto(self.a.x, self.a.y)
