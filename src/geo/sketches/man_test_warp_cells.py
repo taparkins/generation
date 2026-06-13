@@ -1,4 +1,4 @@
-from src.geo.warp_cells import WarpedCells
+from src.geo.mesh.warp_cells import WarpedCells
 from src.geo.point import Point
 from src.geo.line import Line
 from src.raster.scene import RasterScene

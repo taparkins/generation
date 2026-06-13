@@ -1,4 +1,4 @@
-from src.geo.warp_lattice import WarpedLattice
+from src.geo.mesh.warp_lattice import WarpedLattice
 from src.geo.kdtree import KDTree
 from src.geo.point import Point
 from src.geo.line import Line
